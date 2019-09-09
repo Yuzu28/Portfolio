@@ -92,7 +92,7 @@ router.post('/search',(req, res, next) => {
   })
   }
    //Take you to /Anime Route 
-  if (cat =="anime"){
+  else{ {
   var animeURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
   // res.send(animeURL);
   request.get(animeURL, (error, response, animeData) =>{
@@ -103,6 +103,7 @@ router.post('/search',(req, res, next) => {
     })
   })
 }
+  }
 })
 
 
