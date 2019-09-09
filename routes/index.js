@@ -22,23 +22,53 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.get('/anime/:id', (req,res,next) => {
-  const animeId = req.params.id;
-  const animeUrl = "https://api.jikan.moe/v3/anime/" + animeId;
-  
-  request.get(animeUrl, (error, response, animeData) => {
-    const parsedData =JSON.parse(animeData);
-      
-    res.render('single-anime', {
-      parsedData
-    })
-  })
+
+// router.get('/register', (req, res, next)=>{
+//   res.render('register')
+
   
 
-})
+// })
+
+// router.get('/login', (req,res, next) =>{
+//   res.render('login')
+
+// })
 
 
 // manga routes
+router.post('/search',(req, res, next) => {
+  // res.send("sanity check")
+  var userSearchTerm = encodeURI(req.body.animeSearch);
+  let cat = req.body.cat;
+
+  //Take you to /Manga Route
+
+  if (cat =="manga"){
+      var mangaURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
+  
+      request.get(mangaURL, (error, response, mangaData) =>{
+      let parsedData = JSON.parse(mangaData);
+    
+      res.render('search-manga', {
+      parsedData: parsedData.results
+    })
+  })
+  }
+   //Take you to /Anime Route 
+  else{ 
+      var animeURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
+  // res.send(animeURL);
+  request.get(animeURL, (error, response, animeData) =>{
+    let parsedData = JSON.parse(animeData);
+  
+    res.render('search-anime', {
+      parsedData: parsedData.results
+    })
+  })
+
+  }
+})
 
 router.get('/manga/:id', (req,res,next) => {
   const mangaId = req.params.id;
@@ -54,58 +84,20 @@ router.get('/manga/:id', (req,res,next) => {
   
 })
 
-
-
-
-
-// router.get('/register', (req, res, next)=>{
-//   res.render('register')
-
+router.get('/anime/:id', (req,res,next) => {
+  const animeId = req.params.id;
+  const animeUrl = "https://api.jikan.moe/v3/anime/" + animeId;
   
-
-// })
-
-// router.get('/login', (req,res, next) =>{
-//   res.render('login')
-
-  
-// })
-
-
-
-router.post('/search',(req, res, next) => {
-  // res.send("sanity check")
-  var userSearchTerm = encodeURI(req.body.animeSearch);
-  let cat = req.body.cat;
-
-  //Take you to /Manga Route
-
-  if (cat =="manga"){
-  var mangaURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
-  
-  request.get(mangaURL, (error, response, mangaData) =>{
-    let parsedData = JSON.parse(mangaData);
-    
-    res.render('search-manga', {
-      parsedData: parsedData.results
+  request.get(animeUrl, (error, response, animeData) => {
+    const parsedData =JSON.parse(animeData);
+      
+    res.render('single-anime', {
+      parsedData
     })
   })
-  }
-   //Take you to /Anime Route 
-  else{ {
-  var animeURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
-  // res.send(animeURL);
-  request.get(animeURL, (error, response, animeData) =>{
-    let parsedData = JSON.parse(animeData);
   
-    res.render('search-anime', {
-      parsedData: parsedData.results
-    })
-  })
-}
-  }
+
 })
-
 
 
 
