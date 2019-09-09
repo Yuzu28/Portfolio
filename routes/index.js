@@ -75,13 +75,13 @@ router.get('/manga/:id', (req,res,next) => {
 
 router.post('/search',(req, res, next) => {
   // res.send("sanity check")
-  const userSearchTerm = encodeURI(req.body.animeSearch);
+  var userSearchTerm = encodeURI(req.body.animeSearch);
   let cat = req.body.cat;
 
   //Take you to /Manga Route
 
   if (cat =="manga"){
-    const mangaURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
+  var mangaURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
   
   request.get(mangaURL, (error, response, mangaData) =>{
     let parsedData = JSON.parse(mangaData);
@@ -92,8 +92,8 @@ router.post('/search',(req, res, next) => {
   })
   }
    //Take you to /Anime Route 
-
-  const animeURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
+  if (cat =="anime"){
+  var animeURL = `https://api.jikan.moe/v3/search/${cat}?q=${userSearchTerm}`;
   // res.send(animeURL);
   request.get(animeURL, (error, response, animeData) =>{
     let parsedData = JSON.parse(animeData);
@@ -102,6 +102,7 @@ router.post('/search',(req, res, next) => {
       parsedData: parsedData.results
     })
   })
+}
 })
 
 
